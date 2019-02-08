@@ -17,5 +17,10 @@ export default (state = defaultState, action) => {
     newState.input = '';
     return newState;
   }
+  if (action.type === 'delete_todo_item') {
+    let newState = JSON.parse(JSON.stringify(state));
+    newState.list.splice(action.index, 1);
+    return newState;
+  }
   return state;
 }
