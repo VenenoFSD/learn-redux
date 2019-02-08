@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Input, Button, List } from 'antd';
 import store from './store'
+import * as actionCreators from './store/actionCreators'
 import 'antd/dist/antd.css';
 
 class TodoList extends Component {
@@ -35,10 +36,7 @@ class TodoList extends Component {
   }
 
   handleInputChange (e) {
-    const action = {
-      type: 'change_input_value',
-      value: e.target.value
-    };
+    const action = actionCreators.getInputChangeAction(e.target.value);
     store.dispatch(action);
   }
 
@@ -47,17 +45,12 @@ class TodoList extends Component {
   }
 
   handleBtnClick () {
-    const action = {
-      type: 'add_todo_item'
-    };
+    const action = actionCreators.getAddItemAction();
     store.dispatch(action);
   }
 
   handleItemDelete (index) {
-    const action = {
-      type: 'delete_todo_item',
-      index
-    };
+    const action = actionCreators.getDeleteItemAction(index);
     store.dispatch(action);
   }
 
@@ -74,3 +67,12 @@ export default TodoList;
 // 6. reducer将处理后的newState返回给store
 // 7. store接收来自reducer的newState并替换掉原来的state
 // 8. store.subscribe(fn)：store发生变化时就会自动调用fn，在fn中更新组件state
+
+// 9. 优化：
+// 9.1 将action.type统一放在一个文件中管理
+// 9.2 actionCreators管理所有action
+
+// 10. 注意点
+// 10.1 store是唯一的
+// 10.2 不是reducer更新了store，而是store拿到reducer返回的newState自我更新
+// 10.3 reducer必须是纯函数
