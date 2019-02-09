@@ -25,6 +25,12 @@ class TodoList extends Component {
     />
   }
 
+  componentDidMount () {
+    const action = actionCreators.getTodoList();
+    // action为一个函数则store.dispatch为执行该函数（该函数接收dispatch为参数）
+    store.dispatch(action);
+  }
+
   handleInputChange (e) {
     const action = actionCreators.getInputChangeAction(e.target.value);
     store.dispatch(action);
@@ -66,3 +72,12 @@ export default TodoList;
 // 10.1 store是唯一的
 // 10.2 不是reducer更新了store，而是store拿到reducer返回的newState自我更新
 // 10.3 reducer必须是纯函数
+
+// 11. redux-thunk中间件
+// 11.1 作用：可以在action中异步请求数据并dispatch
+// 11.2 启用：参考官方文档
+// 11.3 actionCreators既可以返回一个action对象，返回到组件中dispatch；在redux-thunk作用下也可以返回一个函数，且参数为dispatch，直接在函数中dispatch。
+// 11.4 如果组件中dispatch的是一个函数，会调用该函数
+
+// 12. 中间件：中间件就是对action和store之间的dispatch进行封装和升级。例如redux-thunk，原生的dispatch并不支持将函数作为参数，而redux-thunk实现了这一点
+
