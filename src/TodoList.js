@@ -26,8 +26,14 @@ class TodoList extends Component {
   }
 
   componentDidMount () {
-    const action = actionCreators.getTodoList();
-    // action为一个函数则store.dispatch为执行该函数（该函数接收dispatch为参数）
+    // redux-thunk
+    // const action = actionCreators.getTodoList();
+    // // action为一个函数则store.dispatch为执行该函数（该函数接收dispatch为参数）
+    // store.dispatch(action);
+
+    // redux-saga
+    // 先dispatch'get_init_list'，在reducer不处理，由sagas来捕获，之后由sagas put'init_list_action'再给reducer处理
+    const action = actionCreators.getInitListAction();
     store.dispatch(action);
   }
 
@@ -81,3 +87,8 @@ export default TodoList;
 
 // 12. 中间件：中间件就是对action和store之间的dispatch进行封装和升级。例如redux-thunk，原生的dispatch并不支持将函数作为参数，而redux-thunk实现了这一点
 
+// 13. redux-saga中间件
+// 13.1 特点：单独一个文件操作管理所有异步操作（/store/sagas.js）
+// 13.2 index.js：创建中间件，引入sagas并运行
+// 13.3 sagas.js：捕获指定action类型并执行相应函数（异步操作就放在这里）
+// 13.4 TodoList.js：同样在此处dispatch一个初始action，dispatch但reducer不做处理，由sagas捕获并创建另一个用于异步操作的action并put给reducer处理
